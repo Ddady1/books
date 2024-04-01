@@ -17,5 +17,5 @@ driver.get(f'https://www.booknet.co.il/%D7%97%D7%99%D7%A4%D7%95%D7%A9?q={booknam
 
 price = driver.find_element(By.TAG_NAME, 'ins').text
 ext = driver.find_elements(By.XPATH, '//span[@class="cbar_sale_price"]')
-price
-ext[0].text
+print(price)
+print(ext[0].text)
