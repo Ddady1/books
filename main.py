@@ -19,16 +19,24 @@ driver.get(f'https://www.booknet.co.il/%D7%97%D7%99%D7%A4%D7%95%D7%A9?q={booknam
 
 price = driver.find_element(By.TAG_NAME, 'ins').text
 prices = driver.find_elements(By.TAG_NAME, 'ins')
-bookid = driver.find_elements(By.XPATH, '//div[contains(@class, "data-prodid")]')
+bookid = driver.find_elements(By.XPATH, '//div[@data-prodid]')
 print(type(bookid))
 #ext = driver.find_elements(By.XPATH, '//span[@class="cbar_sale_price"]')
 ext = driver.find_elements(By.XPATH, '//div[@class="products product-cube col-md-2"]')
 #price
-i = 0
+'''i = 0
 for item in prices:
-    print(item.text)
+    #print(item.text)
+    #print(ext[i].text)
     #print(bookid[i].text)
-    i += 1
-print(len(bookid))
+    i += 1'''
+ls = []
+for item in ext:
+    #print(item.text)
+    ls.append(item.get_attribute("data-prodid"))
 
-#ext[0]
+ls
+#bookid[0].text
+#print(ext[1])
+#print(len(ext))
+
