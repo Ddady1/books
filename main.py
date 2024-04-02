@@ -21,22 +21,26 @@ price = driver.find_element(By.TAG_NAME, 'ins').text
 prices = driver.find_elements(By.TAG_NAME, 'ins')
 bookid = driver.find_elements(By.XPATH, '//div[@data-prodid]')
 print(type(bookid))
-#ext = driver.find_elements(By.XPATH, '//span[@class="cbar_sale_price"]')
+books = driver.find_elements(By.XPATH, '//span[@class="sr-only"]')
 ext = driver.find_elements(By.XPATH, '//div[@class="products product-cube col-md-2"]')
+#books_list = []
+for book in books:
+    print(book.text)
+
+#print(books_list)
 #price
 '''i = 0
 for item in prices:
     #print(item.text)
     #print(ext[i].text)
     #print(bookid[i].text)
-    i += 1'''
-ls = []
+    i += 1
+
 for item in ext:
     #print(item.text)
     ls.append(item.get_attribute("data-prodid"))
 
-ls
+ls'''
 #bookid[0].text
 #print(ext[1])
 #print(len(ext))
-
