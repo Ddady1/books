@@ -50,14 +50,27 @@ print('Books from צומת ספרים \n', tzomet(driver))
 # driver.get(f'https://www.e-vrit.co.il/Search/{bookname}')
 
 
-driver = webdriver.Chrome()
+
 # סטימצקי
+def get_book_name(sku):
+    link = 'https://www.steimatzky.co.il/' + sku
+    name_element = driver.find_elements(By.XPATH, f'//a[@href="{link}"]')
+    #print(len(name_element))
+    book_name = name_element[0].get_attribute('title')
+    return book_name
+driver = webdriver.Chrome()
 bookname = input('Please enter books name:')
 driver.get(f'https://www.steimatzky.co.il/catalogsearch/result/?q={bookname}')
 books_id = driver.find_elements(By.XPATH, '//form[@class="start-product-item"]')
 skus = driver.find_elements(By.XPATH, '//form[@class="start-product-item"]')
 #print(len(books))
+books_name = []
 for sku in skus:
-    print(sku.get_attribute('data-product-sku'))
+    #print(sku.get_attribute('data-product-sku'))
+    book = sku.get_attribute('data-product-sku')
+    books_name.append(get_book_name(book))
 for book_id in books_id:
     print(book_id.get_attribute('product_id'))
+
+#books_name = driver.find_elements(By.XPATH, '//a[@href="https://www.steimatzky.co.il/011411684"]')
+print(books_name)
