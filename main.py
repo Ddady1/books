@@ -54,5 +54,10 @@ driver = webdriver.Chrome()
 # סטימצקי
 bookname = input('Please enter books name:')
 driver.get(f'https://www.steimatzky.co.il/catalogsearch/result/?q={bookname}')
-books = driver.find_elements(By.XPATH, '//ul[@class="products list items product-items "]')
-print(books)
+books_id = driver.find_elements(By.XPATH, '//form[@class="start-product-item"]')
+skus = driver.find_elements(By.XPATH, '//form[@class="start-product-item"]')
+#print(len(books))
+for sku in skus:
+    print(sku.get_attribute('data-product-sku'))
+for book_id in books_id:
+    print(book_id.get_attribute('product_id'))
