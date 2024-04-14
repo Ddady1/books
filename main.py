@@ -59,29 +59,44 @@ def get_book_name(sku):
     book_name = name_element[0].get_attribute('title')
     return book_name
 driver = webdriver.Chrome()
+# סטימצקי
 bookname = input('Please enter books name:')
 driver.get(f'https://www.steimatzky.co.il/catalogsearch/result/?q={bookname}')
 books_id = driver.find_elements(By.XPATH, '//form[@class="start-product-item"]')
 skus = driver.find_elements(By.XPATH, '//form[@class="start-product-item"]')
+#authors = driver.find_elements(By.XPATH, '//div[@class="product-category-parse product-parse"]')
+authors = driver.find_elements(By.XPATH, '//div[@class="product-wrapper"]')
+for author in authors:
+    print
+    print(author.text)
+#authors = driver.find_element(By.TAG_NAME, 'a')
 #print(len(books))
-books_name = []
+'''books_name = []
 for sku in skus:
     #print(sku.get_attribute('data-product-sku'))
-    book = sku.get_attribute('data-product-sku')
-    books_name.append(get_book_name(book))
+    book_sku = sku.get_attribute('data-product-sku')
+    books_name.append(get_book_name(book_sku))
 for book_id in books_id:
     print(book_id.get_attribute('product_id'))
 
 #books_name = driver.find_elements(By.XPATH, '//a[@href="https://www.steimatzky.co.il/011411684"]')
 print(books_name)
+print(authors)'''
+'''for author in authors:
+    print(author.text)'''
 
 
 def book_me(driver):
     driver.get(f'https://www.bookme.co.il/%D7%97%D7%99%D7%A4%D7%95%D7%A9?q={bookname}')
-    print('OK')
+    elements = driver.find_elements(By.XPATH,
+                                    '//div[@class="products col-xs-6 col-sm-4 col-md-3 col-lg-3 product-cube"]')
+    print(len(elements))
+    '''for element in elements:
+        print(element.text)'''
+    print(elements[3].text)
 
 
 driver = webdriver.Chrome()
 # driver.get(f'https://www.bookme.co.il/%D7%97%D7%99%D7%A4%D7%95%D7%A9?q={bookname}')
 bookname = input('Please enter books name:')
-print('Books from צומת ספרים \n', book_me(driver))
+print('Books from בוקמי \n', book_me(driver))
