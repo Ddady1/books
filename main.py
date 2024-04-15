@@ -55,22 +55,38 @@ print('Books from צומת ספרים \n', tzomet(driver))
 def get_book_name(sku):
     link = 'https://www.steimatzky.co.il/' + sku
     name_element = driver.find_elements(By.XPATH, f'//a[@href="{link}"]')
-    #print(len(name_element))
+    # print(len(name_element))
     book_name = name_element[0].get_attribute('title')
     return book_name
+
+
 driver = webdriver.Chrome()
 # סטימצקי
 bookname = input('Please enter books name:')
 driver.get(f'https://www.steimatzky.co.il/catalogsearch/result/?q={bookname}')
 books_id = driver.find_elements(By.XPATH, '//form[@class="start-product-item"]')
 skus = driver.find_elements(By.XPATH, '//form[@class="start-product-item"]')
-#authors = driver.find_elements(By.XPATH, '//div[@class="product-category-parse product-parse"]')
+# authors = driver.find_elements(By.XPATH, '//div[@class="product-category-parse product-parse"]')
 authors = driver.find_elements(By.XPATH, '//div[@class="product-wrapper"]')
+books_dict = {}
+id_list = []
+for book_id in books_id:
+    theID = book_id.get_attribute('product_id')
+    # print(theID)
+    id_list.append(theID)
+    books_dict[theID] = ''
+looper = 0
+# print(books_dict)
 for author in authors:
-    print
-    print(author.text)
-#authors = driver.find_element(By.TAG_NAME, 'a')
-#print(len(books))
+    # print(author.text)
+    book_clean = author.text.split('\n')
+    books_dict[id_list[looper]] = book_clean  # author.text
+    looper += 1
+print(books_dict)
+print(books_dict['74921'])
+
+# authors = driver.find_element(By.TAG_NAME, 'a')
+# print(len(books))
 '''books_name = []
 for sku in skus:
     #print(sku.get_attribute('data-product-sku'))
@@ -91,9 +107,8 @@ def book_me(driver):
     elements = driver.find_elements(By.XPATH,
                                     '//div[@class="products col-xs-6 col-sm-4 col-md-3 col-lg-3 product-cube"]')
     print(len(elements))
-    '''for element in elements:
-        print(element.text)'''
-    print(elements[3].text)
+    for element in elements:
+        print(element.text)
 
 
 driver = webdriver.Chrome()
