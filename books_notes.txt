@@ -1,0 +1,13 @@
+book_details items order
+-------------------------
+index - 0: Book's special code
+index - 1: Book's name - String
+index - 2: Book's Author - String
+index - 3: Book's Price - String
+index - 4: Is book in stock - Boolean
+index - 5: Book's link to image - String
+index - 6: Is book printed or digital - Boolean
+
+
+books_dict - is a dictionary which holds all books info by site and by book id key
+
