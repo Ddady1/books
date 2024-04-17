@@ -44,7 +44,6 @@ def tzomet(driver):
         book_details.pop(3)
         book_details.insert(3, in_stock)
         book_details.append(is_printed)
-        book_details.insert(0, book_id)
 
         i = 0
         for item in book_details:
@@ -53,6 +52,7 @@ def tzomet(driver):
         if looper < len(exc) - 1:
             looper += 1
             # print(looper)
+        books_dict[book_id] = book_details
     '''for book in books:
         # print(item.text)
         book_details = []
@@ -69,6 +69,7 @@ def tzomet(driver):
         # print(book_details)
 
     return books_dict'''
+    print(books_dict)
 
 
 driver = webdriver.Chrome()
@@ -86,6 +87,35 @@ print('Books from צומת ספרים \n', tzomet(driver))
 
 
 # סטימצקי
+
+def stimazky(driver):
+    # סטימצקי
+    driver.get(f'https://www.steimatzky.co.il/catalogsearch/result/?q={bookname}')
+    books = driver.find_elements(By.XPATH, '//form[@class="start-product-item"]')
+    book_details = []
+    books_dict = {}
+    regular_price = 'מחיר רגיל'
+
+    for book in books:
+        raw_details = book.text
+        book_details = raw_details.split('\n')
+        print(book_details)
+        if regular_price in book_details:
+            book_details.pop(-1)
+            book_details.pop(-1)
+
+        i = 0
+        for item in book_details:
+            print(f'{i} - {item}')
+            i += 1
+
+
+driver = webdriver.Chrome()
+bookname = input('Please enter books name:')
+
+print('Books from סטימצקי \n', stimazky(driver))
+
+
 def get_book_name(sku):
     link = 'https://www.steimatzky.co.il/' + sku
     name_element = driver.find_elements(By.XPATH, f'//a[@href="{link}"]')
