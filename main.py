@@ -195,14 +195,13 @@ print(authors)'''
 
 def book_me(driver):
     driver.get(f'https://www.bookme.co.il/%D7%97%D7%99%D7%A4%D7%95%D7%A9?q={bookname}')
-    elements = driver.find_elements(By.XPATH,
-                                    '//div[@class="products col-xs-6 col-sm-4 col-md-3 col-lg-3 product-cube"]')
+    books = driver.find_elements(By.XPATH, '//div[@class="products col-xs-6 col-sm-4 col-md-3 col-lg-3 product-cube"]')
     # print(len(elements))
-    '''for element in elements:
-        print(element.text)'''
-    text1 = (elements[3].text)
-    text2 = (elements[4].text)
-    text3 = (elements[6].text)
+    '''for book in books:
+        print(book.text)'''
+    text1 = (books[3].text)
+    text2 = (books[4].text)
+    text3 = (books[6].text)
     # print(type(text))
     print(text1)
     print(text2)
@@ -215,6 +214,7 @@ def book_me(driver):
         print(no_stock)
     else:
         print('במלאי')
+    print(len(text4))
 
 
 driver = webdriver.Chrome()
