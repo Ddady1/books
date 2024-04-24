@@ -192,17 +192,52 @@ print(authors)'''
 '''for author in authors:
     print(author.text)'''
 
+# בוקמי
+def price_raw(raw):
+    # print(raw)
+    prices_list = raw.split('₪')
+    prices_list.pop(-1)
+    for item in prices_list:
+        print(item)
+        print(len(item))
+
+    print(prices_list)
+
 
 def book_me(driver):
     driver.get(f'https://www.bookme.co.il/%D7%97%D7%99%D7%A4%D7%95%D7%A9?q={bookname}')
     books = driver.find_elements(By.XPATH, '//div[@class="products col-xs-6 col-sm-4 col-md-3 col-lg-3 product-cube"]')
+    images = driver.find_elements(By.XPATH, '//img[@class="img-responsive img-lazy-load"]')
+    book_details = []
+    books_dict = {}
+    books_image = []
+    for image in images:
+        books_image.append(image.get_attribute("src"))
+    is_digital = None
+    is_printed = None
+    author = ''
+    looper = 0
+    price_clean = ''
     # print(len(elements))
-    '''for book in books:
-        print(book.text)'''
-    text1 = (books[3].text)
+    for book in books:
+        raw_details = book.text
+        book_details = raw_details.split('\n')
+        book_id = book.get_attribute('data-prodid')
+        print(book_details)
+        is_digital = book.get_attribute('data-digital')
+        is_printed = book.get_attribute('data-print')
+        price_clean = price_raw(book_details[1])
+
+        i = 0
+        for item in book_details:
+            print(f'{i} - {item}')
+            i += 1
+        looper += 1
+
+    '''text1 = (books[3].text)
     text2 = (books[4].text)
     text3 = (books[6].text)
-    # print(type(text))
+    #print(type(text))
     print(text1)
     print(text2)
     print(text3)
@@ -214,7 +249,7 @@ def book_me(driver):
         print(no_stock)
     else:
         print('במלאי')
-    print(len(text4))
+    print(len(text4))'''
 
 
 driver = webdriver.Chrome()
