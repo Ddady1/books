@@ -92,15 +92,20 @@ def stimazky(driver):
     # סטימצקי
     driver.get(f'https://www.steimatzky.co.il/catalogsearch/result/?q={bookname}')
     books = driver.find_elements(By.XPATH, '//form[@class="start-product-item"]')
-
+    images = driver.find_elements(By.XPATH, '//a/span/span/img[@class="product-image-photo"]')
     book_details = []
     books_dict = {}
     regular_price = 'מחיר רגיל'
     item_price = 'מחיר מוצר'
     currency = 'ש"ח'
     club_price = ''  # NEED TO TAKE CARE OF THIS
-    is_digital = None
-    is_printed = None
+    is_digital = 'דיגיטלי'
+    is_printed = 'מודפס'
+    in_stock = None
+    looper = 0
+    books_image = []
+    for image in images:
+        books_image.append(image.get_attribute('src'))
 
     for book in books:
         raw_details = book.text
@@ -116,7 +121,7 @@ def stimazky(driver):
             book_details.pop(i + 1)
             book_details.pop(i)
 
-        print(book_details)
+        # print(book_details)
         '''if regular_price in book_details:
             book_details.pop(-1)
             book_details.pop(-1)'''
@@ -126,12 +131,17 @@ def stimazky(driver):
         for item in book_details:
             if currency in item:
                 book_details.remove(item)
-        # print(book_details)
+        if is_digital in book_details or is_printed in book_details:
+            in_stock = True
+            book_details.insert(2, in_stock)
+        book_details.insert(3, books_image[looper])
+        print(book_details)
 
         i = 0
         for item in book_details:
             print(f'{i} - {item}')
             i += 1
+        looper += 1
 
         books_dict[book_id] = book_details
     return books_dict
@@ -195,44 +205,75 @@ print(authors)'''
 # בוקמי
 def price_raw(raw):
     # print(raw)
-    prices_list = raw.split('₪')
-    prices_list.pop(-1)
+    prices_list = raw.split(' ')
+    # prices_list.pop(-1)
+    num = 1000
     for item in prices_list:
-        print(item)
-        print(len(item))
+        if (item.replace('.', '', 1).isdigit() and float(item) < num):
+            num = float(item)
 
-    print(prices_list)
+    return num
+
+
+def name_raw(raw_string):
+    name_list = raw_string.split('/')
+
+    return name_list
 
 
 def book_me(driver):
     driver.get(f'https://www.bookme.co.il/%D7%97%D7%99%D7%A4%D7%95%D7%A9?q={bookname}')
     books = driver.find_elements(By.XPATH, '//div[@class="products col-xs-6 col-sm-4 col-md-3 col-lg-3 product-cube"]')
     images = driver.find_elements(By.XPATH, '//img[@class="img-responsive img-lazy-load"]')
-    book_details = []
+    formats = driver.find_elements(By.XPATH, '//div[@class="productPrice"]')
+    book_raw_details = []
     books_dict = {}
     books_image = []
+    no_stock = 'אזל'
     for image in images:
         books_image.append(image.get_attribute("src"))
     is_digital = None
     is_printed = None
-    author = ''
+
+    currency = 'ש"ח'
     looper = 0
     price_clean = ''
     # print(len(elements))
     for book in books:
+        book_details = []
+        title = ''
+        author = ''
         raw_details = book.text
-        book_details = raw_details.split('\n')
+        book_raw_details = raw_details.split('\n')
         book_id = book.get_attribute('data-prodid')
-        print(book_details)
-        is_digital = book.get_attribute('data-digital')
-        is_printed = book.get_attribute('data-print')
-        price_clean = price_raw(book_details[1])
+        print(book_raw_details)
+        is_digital = formats[looper].get_attribute('data-digital')
+        is_printed = formats[looper].get_attribute('data-print')
+        if '/' in book_raw_details[0]:
+            title, author = name_raw(book_raw_details[0])
+        else:
+            title = book_raw_details[0]
+        price_clean = price_raw(book_raw_details[1])
+        book_details.append(title)
+        book_details.append(author)
+        if no_stock in book_raw_details:
+            book_details.append(False)
+        else:
+            book_details.append(True)
+        book_details.append(books_image[looper])
+        book_details.append(is_digital)
+        book_details.append(None)
+        book_details.append(is_printed)
+        book_details.append(currency + str(price_clean))
 
         i = 0
         for item in book_details:
             print(f'{i} - {item}')
             i += 1
         looper += 1
+        books_dict[book_id] = book_details
+
+    print(books_dict)
 
     '''text1 = (books[3].text)
     text2 = (books[4].text)
