@@ -298,4 +298,4 @@ def book_me(driver):
 driver = webdriver.Chrome()
 # driver.get(f'https://www.bookme.co.il/%D7%97%D7%99%D7%A4%D7%95%D7%A9?q={bookname}')
 bookname = input('Please enter books name:')
-print('Books from בוקמי \n', book_me(driver))
+print('Books from בוקמי \n', stimazky(driver))
