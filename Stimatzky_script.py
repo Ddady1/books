@@ -15,7 +15,9 @@ def stimazky(driver):
     club_price = ''  # NEED TO TAKE CARE OF THIS
     is_digital = 'דיגיטלי'
     is_printed = 'מודפס'
-    in_stock = None
+    no_stock = 'חסר זמנית'
+    update_when = 'עדכנו כשחוזר'
+    in_stock = 'במלאי'
     looper = 0
     books_image = []
     for image in images:
@@ -26,6 +28,11 @@ def stimazky(driver):
         book_details = raw_details.split('\n')
         book_id = book.get_attribute('product_id')
         print(book_details)
+        if book_details[0] == no_stock:
+            in_stock = 'חסר במלאי'
+            book_details.pop(0)
+        if book_details[0] == update_when:
+            book_details.pop(0)
         index = []
         for i in range(len(book_details)):
             if book_details[i] == regular_price:
@@ -46,7 +53,6 @@ def stimazky(driver):
             if currency in item:
                 book_details.remove(item)
         if is_digital in book_details or is_printed in book_details:
-            in_stock = True
             book_details.insert(2, in_stock)
         book_details.insert(3, books_image[looper])
         print(book_details)
@@ -58,6 +64,14 @@ def stimazky(driver):
         looper += 1
 
         books_dict[book_id] = book_details
+    del_items = []
+    for key in books_dict:
+        if bookname not in books_dict[key][0]:
+            del_items.append(key)
+    #print(del_items)
+    for item in del_items:
+        books_dict.pop(item, None)
+    #print(del_items)
     return books_dict
 
 
