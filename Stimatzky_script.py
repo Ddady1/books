@@ -27,6 +27,8 @@ def stimazky(driver):
         raw_details = book.text
         book_details = raw_details.split('\n')
         book_id = book.get_attribute('product_id')
+        if bookname not in book_details[0]:
+            continue
         print(book_details)
         if book_details[0] == no_stock:
             in_stock = 'חסר במלאי'
@@ -64,13 +66,13 @@ def stimazky(driver):
         looper += 1
 
         books_dict[book_id] = book_details
-    del_items = []
+    '''del_items = []
     for key in books_dict:
         if bookname not in books_dict[key][0]:
             del_items.append(key)
     #print(del_items)
     for item in del_items:
-        books_dict.pop(item, None)
+        books_dict.pop(item, None)'''
     #print(del_items)
     return books_dict
 
