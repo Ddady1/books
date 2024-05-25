@@ -11,7 +11,7 @@ def tzomet(driver):
     images = driver.find_elements(By.XPATH, '//img[@class="img-responsive img-lazy-load"]')
     # azal = driver.find
     in_stock = None
-    is_printed = True
+    is_printed = 'מודפס'
     is_digital = False
     in_basket = 'הוסף לסל'
     price_str = 'מחיר מכירה'
@@ -38,9 +38,9 @@ def tzomet(driver):
         book_details.append(books_image[looper])
         print(book_details)
         if in_basket in book_details:
-            in_stock = True
+            in_stock = 'במלאי'
         else:
-            in_stock = False
+            in_stock = 'אזל'
         book_details.pop(3)
         book_details.insert(3, in_stock)
         book_details.append(is_printed)
@@ -69,7 +69,8 @@ def tzomet(driver):
         # print(book_details)
 
     return books_dict'''
-    print(books_dict)
+    #print(books_dict)
+    return books_dict
 
 
 driver = webdriver.Chrome()
