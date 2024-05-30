@@ -74,7 +74,7 @@ def book_me(driver):
         looper += 1
         books_dict[book_id] = book_details
 
-    print(books_dict)
+    return books_dict
 
     '''text1 = (books[3].text)
     text2 = (books[4].text)
